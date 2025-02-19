@@ -18,6 +18,9 @@ classifiers = [
     "Operating System :: Unix",
 ]
 
+[dependency-groups]
+dev = ["pytest"]
+
 [project.urls]
 Homepage = "https://github.com/zmeir/rsyncer"
 Documentation = "https://github.com/zmeir/rsyncer/blob/main/README.md"
