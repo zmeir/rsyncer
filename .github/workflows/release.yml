@@ -28,3 +28,16 @@ jobs:
     #   - name: Smoke test (source distribution)
     #     run: uv run --isolated --no-project -p 3.13 --with dist/*.tar.gz tests/smoke_test.py
       - run: uv publish --trusted-publishing always
+  release:
+    name: Release pushed tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes
