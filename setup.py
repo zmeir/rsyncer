@@ -1,5 +1,7 @@
+import sys
 from setuptools import setup
 
+sys.path.append(".")  # temporary
 from rsyncer.__version__ import __version__, __description__, __title__, __url__, __author__, __author_email__
 
 VERSION = __version__
