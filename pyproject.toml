@@ -1,5 +1,5 @@
 [project]
-name = "rsyncer"
+name = "pyrsyncer"
 dynamic = ["version"]
 requires-python = ">=3.8"
 dependencies = []
