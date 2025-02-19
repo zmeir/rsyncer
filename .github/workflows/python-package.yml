@@ -45,7 +45,7 @@ jobs:
     - name: Install Ruff
       uses: astral-sh/ruff-action@v3
     - name: Run Ruff Check
-      run: ruff check --fix
+      run: ruff check --fix --output-format=github .
     - name: Run Ruff Format
       run: ruff format
 
