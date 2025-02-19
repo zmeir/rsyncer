@@ -22,7 +22,7 @@ import shutil
 import unittest
 import os
 
-from ..rsyncer import rsync
+from rsyncer import rsync
 
 
 class TestSyncer(unittest.TestCase):
@@ -59,7 +59,7 @@ class TestSyncer(unittest.TestCase):
         shutil.rmtree(os.path.join(os.sep, "tmp", "PyRsyncSource"))
         shutil.rmtree(os.path.join(os.sep, "tmp", "PyRsyncDest"))
 
-    def syncSingleFile(self):
+    def test_single_file(self):
         with rsync.Syncer(source="/tmp/PyRsyncSource/file1.txt", dest="/tmp/PyRsyncDest") as s:
             self.assertEqual(s.get_command(), "rsync /tmp/PyRsyncSource/file1.txt /tmp/PyRsyncDest")
             s.run()
