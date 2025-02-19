@@ -1,28 +1,28 @@
 """
-    rsyncer <https://github.com/lfreist/rsyncer.git>
-    rsync.py uses systems rsync to run rsync commands from within python
+rsyncer <https://github.com/lfreist/rsyncer.git>
+rsync.py uses systems rsync to run rsync commands from within python
 
-    Copyright (C) 2022 Leon Freist <freist@informatik.uni-freiburg.de>
+Copyright (C) 2022 Leon Freist <freist@informatik.uni-freiburg.de>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from __future__ import annotations
 
 from rsyncer.exceptions import DualRemoteError, RsyncError
 
-from typing import List, Optional, Iterable, Any, Union
+from typing import List, Iterable, Union
 
 import subprocess
 import os
@@ -32,24 +32,136 @@ import pathlib
 
 # this is just for development purposes
 _valid_args = (
-    "verbose", "msgs2stderr", "quiet", "no-motd", "checksum", "archive", "recursive", "relative", "no-implied-dirs",
-    "backup", "backup-dir", "update", "inplace", "append", "append-verify", "dirs", "links", "copy-links", "fuzzy",
-    "copy-unsafe-links", "safe-links", "munge-links", "copy-dirlinks", "keep-dirlinks", "hard-links", "perms",
-    "executability", "acls", "xattrs", "owner", "group", "devices", "specials", "times", "omit-dir-times",
-    "omit-link-times", "super", "fake-super", "sparse", "preallocate", "dry-run", "whole-file", "one-file-system",
-    "existing", "ignore-existing", "remove-source-files", "del", "delete", "delete-before", "delete-during",
-    "delete-delay", "delete-after", "delete-excluded", "ignore-missing-args", "delete-missing-args", "force",
-    "ignore-errors", "partial", "delay_updates", "prune-empty-dirs", "numeric-ids", "ignore-times", "size-only",
-    "compress", "cvs-exclude", "from0", "protect-args", "blocking-io", "stats", "8-bit-output", "human-readable",
-    "progress", "itemize-changes", "list-only", "noatime", "ipv4", "ipv6", "version", "help"
+    "verbose",
+    "msgs2stderr",
+    "quiet",
+    "no-motd",
+    "checksum",
+    "archive",
+    "recursive",
+    "relative",
+    "no-implied-dirs",
+    "backup",
+    "backup-dir",
+    "update",
+    "inplace",
+    "append",
+    "append-verify",
+    "dirs",
+    "links",
+    "copy-links",
+    "fuzzy",
+    "copy-unsafe-links",
+    "safe-links",
+    "munge-links",
+    "copy-dirlinks",
+    "keep-dirlinks",
+    "hard-links",
+    "perms",
+    "executability",
+    "acls",
+    "xattrs",
+    "owner",
+    "group",
+    "devices",
+    "specials",
+    "times",
+    "omit-dir-times",
+    "omit-link-times",
+    "super",
+    "fake-super",
+    "sparse",
+    "preallocate",
+    "dry-run",
+    "whole-file",
+    "one-file-system",
+    "existing",
+    "ignore-existing",
+    "remove-source-files",
+    "del",
+    "delete",
+    "delete-before",
+    "delete-during",
+    "delete-delay",
+    "delete-after",
+    "delete-excluded",
+    "ignore-missing-args",
+    "delete-missing-args",
+    "force",
+    "ignore-errors",
+    "partial",
+    "delay_updates",
+    "prune-empty-dirs",
+    "numeric-ids",
+    "ignore-times",
+    "size-only",
+    "compress",
+    "cvs-exclude",
+    "from0",
+    "protect-args",
+    "blocking-io",
+    "stats",
+    "8-bit-output",
+    "human-readable",
+    "progress",
+    "itemize-changes",
+    "list-only",
+    "noatime",
+    "ipv4",
+    "ipv6",
+    "version",
+    "help",
 )
 _valid_kwargs = (
-    "info", "debug", "backup_dir", "suffix", "chmod", "checksum_choice", "block_size", "rsh", "rsync_path",
-    "max_delete", "max_size", "min_size", "partial_dir", "usermap", "grupmap", "chown", "timeout", "contimeout",
-    "modify_window", "temp_dir", "compare_dest", "copy_dest", "link_dest", "compress_level", "skip-compress",
-    "filter", "exclude", "exclude_from", "include", "include_from", "files_from", "address", "port", "sockopts",
-    "outbuf", "remote_option", "out_format", "log_file", "log_file_format", "password_file", "bwlimit", "stop_at",
-    "time_limit", "write_batch", "only_write_batch", "read_batch", "protocol", "iconv", "checksum_seed"
+    "info",
+    "debug",
+    "backup_dir",
+    "suffix",
+    "chmod",
+    "checksum_choice",
+    "block_size",
+    "rsh",
+    "rsync_path",
+    "max_delete",
+    "max_size",
+    "min_size",
+    "partial_dir",
+    "usermap",
+    "grupmap",
+    "chown",
+    "timeout",
+    "contimeout",
+    "modify_window",
+    "temp_dir",
+    "compare_dest",
+    "copy_dest",
+    "link_dest",
+    "compress_level",
+    "skip-compress",
+    "filter",
+    "exclude",
+    "exclude_from",
+    "include",
+    "include_from",
+    "files_from",
+    "address",
+    "port",
+    "sockopts",
+    "outbuf",
+    "remote_option",
+    "out_format",
+    "log_file",
+    "log_file_format",
+    "password_file",
+    "bwlimit",
+    "stop_at",
+    "time_limit",
+    "write_batch",
+    "only_write_batch",
+    "read_batch",
+    "protocol",
+    "iconv",
+    "checksum_seed",
 )
 
 
@@ -65,15 +177,16 @@ class Syncer:
     :param **kwargs: take any rsync option with value (value must be True if option does not take a value)
     """
 
-    def __init__(self,
-                 source: Union[Iterable[str], str],
-                 dest: Union[Iterable[str], str],
-                 rsync_path: str = "rsync",
-                 source_ssh: str = None,
-                 dest_ssh: str = None,
-                 output: str = None,
-                 **kwargs
-                 ) -> None:
+    def __init__(
+        self,
+        source: Union[Iterable[str], str],
+        dest: Union[Iterable[str], str],
+        rsync_path: str = "rsync",
+        source_ssh: str = None,
+        dest_ssh: str = None,
+        output: str = None,
+        **kwargs,
+    ) -> None:
         if source_ssh is not None and dest_ssh is not None:
             raise DualRemoteError()
         self._source = self._reformat_dir(source, source_ssh)
@@ -197,11 +310,7 @@ class Syncer:
         run the built rsync command as a subprocess
         :return: None
         """
-        self._process = subprocess.Popen(
-            self.get_cmd_list(),
-            stdout=self.output_file,
-            preexec_fn=os.setsid
-        )
+        self._process = subprocess.Popen(self.get_cmd_list(), stdout=self.output_file, preexec_fn=os.setsid)
 
     def is_done(self) -> bool:
         """
@@ -238,13 +347,15 @@ class Syncer:
         return self._process
 
 
-def rsync(source: Union[Iterable[str], str],
-          dest: Union[Iterable[str], str],
-          rsync_path: str = "rsync",
-          source_ssh: str = None,
-          dest_ssh: str = None,
-          output: str = None,
-          **kwargs) -> bool:
+def rsync(
+    source: Union[Iterable[str], str],
+    dest: Union[Iterable[str], str],
+    rsync_path: str = "rsync",
+    source_ssh: str = None,
+    dest_ssh: str = None,
+    output: str = None,
+    **kwargs,
+) -> bool:
     """
     Using the Syncer class to provide a single static functions that runs rsync commands.
     :param source: path to source file or dir
@@ -268,6 +379,7 @@ def rsync(source: Union[Iterable[str], str],
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 def get_multi_thread_dirs(rsync_cmd_list) -> List[List[str]]:
     if "--dry-run" not in rsync_cmd_list and "-n" not in rsync_cmd_list:
