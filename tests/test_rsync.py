@@ -61,7 +61,7 @@ class TestSyncer(unittest.TestCase):
 
     def test_single_file(self):
         with rsync.Syncer(source="/tmp/PyRsyncSource/file1.txt", dest="/tmp/PyRsyncDest") as s:
-            self.assertEqual(s.get_command(), "rsync /tmp/PyRsyncSource/file1.txt /tmp/PyRsyncDest")
+            self.assertEqual(s.get_shell_command(), "rsync /tmp/PyRsyncSource/file1.txt /tmp/PyRsyncDest")
             s.run()
             while not s.is_done():
                 pass
