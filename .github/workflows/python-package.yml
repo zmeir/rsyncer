@@ -3,7 +3,7 @@
 
 name: Python package
 
-on: [ push, pull_request ]
+on: [ push ]
 # on:
 #   push:
 #     branches: [ "main" ]
@@ -42,8 +42,12 @@ jobs:
         if [ -f requirements.txt ]; then uv pip install -r requirements.txt; fi
         if [ -f pyproject.toml ]; then uv sync --all-extras --dev; fi
 
-    - name: Run Ruff
+    - name: Install Ruff
       uses: astral-sh/ruff-action@v3
+    - name: Run Ruff Check
+      run: ruff check --fix
+    - name: Run Ruff Format
+      run: ruff format
 
     - name: Run Tests
       run: uv run pytest tests
