@@ -41,17 +41,17 @@ class TestSyncer(unittest.TestCase):
           - PyRsyncDest/
         """
         os.mkdir(os.path.join(os.sep, "tmp", "PyRsyncSource"))
-        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "file1.txt")) as f:
+        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "file1.txt"), "w") as f:
             f.writelines(["line 1", "line 2"])
-        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "file2.txt")) as f:
+        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "file2.txt"), "w") as f:
             f.writelines(["Zeile 1", "Zeile 2"])
         os.mkdir(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir1"))
         os.mkdir(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir2"))
-        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir1", "dat1.txt")) as f:
+        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir1", "dat1.txt"), "w") as f:
             f.writelines(["line 1", "line 2"])
-        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir1", "dat2.txt")) as f:
+        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir1", "dat2.txt"), "w") as f:
             f.writelines(["line 1", "line 2"])
-        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir2", "dat.txt")) as f:
+        with open(os.path.join(os.sep, "tmp", "PyRsyncSource", "subdir2", "dat.txt"), "w") as f:
             f.writelines(["line 1", "line 2"])
         os.mkdir(os.path.join(os.sep, "tmp", "PyRsyncDest"))
 
