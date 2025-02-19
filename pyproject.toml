@@ -1,11 +1,32 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "rsyncer"
 dynamic = ["version"]
 requires-python = ">=3.8"
+dependencies = []
+authors = [
+  {name = "Leon Freist", email = "freist@informatik.uni-freiburg.de"},
+]
+maintainers = [
+  {name = "Zohar Meir", email = "zohar.meir@gmail.com"},
+]
+description = "rsync wrapper for python"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: Unix",
+]
+
+[project.urls]
+Homepage = "https://github.com/zmeir/rsyncer"
+Documentation = "https://github.com/zmeir/rsyncer/blob/main/README.md"
+Repository = "https://github.com/zmeir/rsyncer.git"
+#Changelog = "https://github.com/zmeir/rsyncer/blob/main/CHANGELOG.md"
 
 [tool.ruff]
 line-length = 120
