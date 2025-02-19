@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from rsyncer.exceptions import DualRemoteError, RsyncError
 
-from typing import List, Optional, Iterable, Any, Union
+from typing import List, Iterable, Union
 
 import subprocess
 import os
