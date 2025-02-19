@@ -109,12 +109,16 @@ class Syncer:
         > Syncer._parse_arg("exclude", ["path/1", "path/2"]) -> ["--exclude", "path/1", "--exclude", "path/2"]
         > Syncer._parse_arg("verbose")                       -> ["--verbose"]
         > Syncer._parse_arg("v")                             -> ["-v"]
+        > Syncer._parse_arg("v", True)                       -> ["-v"]
+        > Syncer._parse_arg("v", False)                      -> []
 
         :param name: Name of the argument
         :param value: Option/Value for the argument
         :return: List[str]
         """
-        if isinstance(value, bool):
+        if value is False:
+            return []
+        if value is True:
             value = None
         name = name.replace("_", "-")
         if len(name) == 1:
