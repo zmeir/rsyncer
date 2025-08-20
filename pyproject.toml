@@ -33,7 +33,7 @@ build-backend = "hatchling.build"
 
 [tool.hatch]
 version = {path = "rsyncer/__init__.py", attr = "__version__"}
-build.targets.wheel.packages = ["rsyncer"]
+build.packages = ["rsyncer"]
 
 [tool.ruff]
 line-length = 120
