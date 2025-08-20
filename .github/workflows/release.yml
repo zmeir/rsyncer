@@ -21,12 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
+      # Build the wheel and source distribution
       - run: uv build
-      # Check that basic features work and we didn't miss to include crucial files
-    #   - name: Smoke test (wheel)
-    #     run: uv run --isolated --no-project -p 3.13 --with dist/*.whl tests/smoke_test.py
-    #   - name: Smoke test (source distribution)
-    #     run: uv run --isolated --no-project -p 3.13 --with dist/*.tar.gz tests/smoke_test.py
+      # Check that basic features work, and we didn't miss to include crucial files
+      - name: Smoke test (wheel)
+        run: uv run --isolated --no-project --with pytest --with dist/*.whl pytest tests
+      - name: Smoke test (source distribution)
+        run: uv run --isolated --no-project --with pytest --with dist/*.tar.gz pytest tests
+      # Publish to PyPI
       - run: uv publish --trusted-publishing always
   release:
     name: Release pushed tag
