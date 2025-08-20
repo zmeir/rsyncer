@@ -5,8 +5,11 @@ rsyncer is a simple rsync wrapper for python.
 You need to have an rsync installation on your system and added to your system's path.
 
 ## Installation
+`pip install pyrsyncer -U`
+
+## Development
 1. download this repository
-2. from within this repo run `make install`
+2. from within this repo run `pip install -e .`
 3. test installation by importing `rsyncer` in a python shell
 
 ## Usage
